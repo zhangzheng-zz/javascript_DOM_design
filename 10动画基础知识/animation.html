@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>animation</title>
+</head>
+
+<body>
+  <p id="message">Whee!</p>
+  <script src="./addLoadEvent.js"></script>
+  <script>
+    function positionMessage() {
+      if (!document.getElementById) return false
+      if (!document.getElementById('message')) return false
+      var elem = document.getElementById('message')
+      elem.style.position = 'absolute'
+      elem.style.left = '50px'
+      elem.style.top = '100px'
+      moveElement("message", 125, 25, 20)
+
+    }
+    function moveElement(elementId, final_x, final_y, interval) {
+      if (!document.getElementById) return false
+      if (!document.getElementById(elementId)) return false
+      var elem = document.getElementById(elementId)
+      var xpos = parseInt(elem.style.left)
+      var ypos = parseInt(elem.style.top)
+      if (xpos === 200 && ypos === 100) {
+        return true
+      }
+      (xpos < final_x) && xpos++
+      (xpos > final_x) && xpos--
+      (ypos < final_y) && ypos++
+      (ypos > final_y) && ypos--
+      elem.style.left = xpos + 'px'
+      elem.style.top = ypos + 'px'
+      // var repeat = "moveElement('" + elementId + "'," + final_x + "," + final_y + "," + interval + ")"
+      var repeat = `moveElement('${elementId}',${final_x},${final_y},${interval})`
+      setTimeout(repeat, interval)
+    }
+    addLoadEvent(positionMessage)
+
+  </script>
+</body>
+
+</html>

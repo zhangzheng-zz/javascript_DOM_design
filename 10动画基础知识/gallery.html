@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>grallery</title>
+</head>
+<style>
+  #slideshow {
+    width: 133px;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  #preview{
+    position: absolute;
+  }
+</style>
+
+<body>
+  <h1>Web Design</h1>
+  <p>There are things you should know</p>
+  <ul id="linkList">
+    <li>
+      <a href="images/fireworks.jpg" title="fireworks">Fireworks</a>
+    </li>
+    <li><a href="images/coffee.jpg" title="coffee">Coffee</a>
+    </li>
+    <li><a href="images/rose.jpg" title="rose">Rose</a>
+    </li>
+  </ul>
+  <!-- <div id="slideshow">
+    <img src="images/topics.png" id="preview">
+  </div> -->
+
+  <script src="./addLoadEvent.js"></script>
+  <script src="./insetAfter.js"></script>
+
+  <script>
+    addLoadEvent(prepareSlideshow)
+    function prepareSlideshow() {
+
+      var slideshow = document.createElement('div')
+      slideshow.setAttribute('id', 'slideshow')
+      var preview = document.createElement('img')
+      preview.setAttribute('id', 'preview')
+      preview.setAttribute('src', 'images/topics.png')
+      slideshow.appendChild(preview)
+
+
+      // var preview = document.getElementById('preview')
+      // preview.style.position = 'absolute'
+
+
+      // preview.style.left = '0px'
+      // preview.style.top = '0px'
+      var list = document.getElementById('linkList')
+
+      insetAfter(slideshow, list)
+
+      var links = list.getElementsByTagName('a')
+      links[0].onmouseover = function () {
+        moveElement('preview', 0, 0, 10)
+      }
+      links[1].onmouseover = function () {
+        moveElement('preview', -133, 0, 10)
+      }
+      links[2].onmouseover = function () {
+        moveElement('preview', -266, 0, 10)
+      }
+    }
+    function moveElement(elementId, final_x, final_y, interval) {
+      if (!document.getElementById) return false
+      if (!document.getElementById(elementId)) return false
+      var elem = document.getElementById(elementId)
+      // 如果上一个动画还存在那么直接清除掉
+      if (elem.movement) {
+        clearTimeout(elem.movement)
+      }
+      if (!elem.style.left) {
+        elem.style.left = '0px'
+      }
+      if (!elem.style.top) {
+        elem.style.top = '0px'
+      }
+      var xpos = parseInt(elem.style.left)
+      var ypos = parseInt(elem.style.top)
+      if (xpos === 200 && ypos === 100) {
+        return true
+      }
+
+      // 步进 1px 均速
+      // (xpos < final_x) && xpos++
+      // (xpos > final_x) && xpos--
+      // (ypos < final_y) && ypos++
+      // (ypos > final_y) && ypos--
+
+      // 改进 步进为距离的十分之一最小为1
+      var dist = 0
+      if (xpos < final_x) {
+        dist = Math.ceil((final_x - xpos) / 10)
+        xpos = xpos + dist
+      }
+      if (xpos > final_x) {
+        dist = Math.ceil((xpos - final_x) / 10)
+        xpos = xpos - dist
+      }
+      if (ypos < final_y) {
+        dist = Math.ceil((final_y - ypos) / 10)
+        ypos = ypos + dist
+      }
+      if (ypos > final_y) {
+        dist = Math.ceil((ypos > final_y) / 10)
+        ypos = ypos - dist
+      }
+      elem.style.left = xpos + 'px'
+      elem.style.top = ypos + 'px'
+      // var repeat = "moveElement('" + elementId + "'," + final_x + "," + final_y + "," + interval + ")"
+      var repeat = `moveElement('${elementId}',${final_x},${final_y},${interval})`
+      elem.movement = setTimeout(repeat, interval)
+    }
+
+
+  </script>
+</body>
+
+
+</html>

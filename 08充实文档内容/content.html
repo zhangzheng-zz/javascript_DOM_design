@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explaining the Document Object model</title>
+</head>
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+  }
+
+  abbr {
+    text-decoration: none;
+    border: 0;
+    font-style: normal;
+  }
+</style>
+
+<body>
+  <h1>What is the Document Object model</h1>
+  <p>
+    The <abbr title="World Wide Web Consortium">W3C</abbr>
+    defines the <abbr title="Document Object model">DOM</abbr> as:
+  </p>
+  <blockquote cite="http://www.w3.org/DOM/">
+    <p>a platform and language-neutral ...</p>
+  </blockquote>
+  <p>
+    It is an <abbr title="Application Programming Interface">API</abbr>
+    that can ... <abbr title="HyperText Markup Language">HTML</abbr>
+  </p>
+  <!-- 省略语列表 -->
+  <!-- <dl>
+    <dt>W3C</dt>
+    <dd>World Wide Web Consortium</dd>
+    <dt>DOM</dt>
+    <dd>Document Object model</dd>
+    <dt>API</dt>
+    <dd>Application Programming Interface</dd>
+    <dt>HTML</dt>
+    <dd>HyperText Markup Language</dd>
+  </dl> -->
+  <script>
+
+    window.onload = function () {
+      displayAbbreviations()
+      displayCitations()
+    }
+
+    function displayAbbreviations() {
+
+      var abbreviations = document.getElementsByTagName('abbr')
+      if (abbreviations.length < 1) return false
+
+      var defs = []
+      for (var i = 0; i < abbreviations.length; i++) {
+        var definition = abbreviations[i].getAttribute('title')
+        var key = abbreviations[i].lastChild.nodeValue
+        defs[key] = definition
+      }
+
+      var dlist = document.createElement('dl')
+      for (const key in defs) {
+
+        var dTitle = document.createElement('dt')
+        var dTitle_text = document.createTextNode(key)
+        dTitle.appendChild(dTitle_text)
+
+        var definition = defs[key]
+        var dDesc = document.createElement('dd')
+        var dDesc_text = document.createTextNode(definition)
+        dDesc.appendChild(dDesc_text)
+
+        dlist.appendChild(dTitle)
+        dlist.appendChild(dDesc)
+
+      }
+
+      var header = document.createElement('h2')
+      var header_text = document.createTextNode('Abbreviations')
+      header.appendChild(header_text)
+      document.body.appendChild(header)
+      document.body.appendChild(dlist)
+    }
+
+    function displayCitations() {
+      var quotes = document.getElementsByTagName('blockquote')
+      for (var i = 0; i < quotes.length; i++) {
+
+        if (!quotes[i].getAttribute('cite')) continue
+
+        var url = quotes[i].getAttribute('cite')
+        var quoteChildren = quotes[i].getElementsByTagName('*')
+        if (quoteChildren.length < 1) continue
+        var elem = quoteChildren[quoteChildren.length - 1]
+
+        var link = document.createElement('a')
+        var link_text = document.createTextNode('source')
+        link.appendChild(link_text)
+        link.setAttribute('href', url)
+
+        var superScript = document.createElement('sup')
+        superScript.appendChild(link)
+        elem.appendChild(superScript)
+
+
+      }
+    }
+  </script>
+</body>
+
+</html>

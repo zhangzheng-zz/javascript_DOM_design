@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>grallery</title>
+</head>
+
+<body>
+  <h1>Snapshots</h1>
+  <ul id="imageGrallery">
+    <li>
+      <a href="images/fireworks.jpg" title="fireworks">Fireworks</a>
+    </li>
+    <li><a href="images/coffee.jpg" title="coffee">Coffee</a>
+    </li>
+    <li><a href="images/rose.jpg" title="rose">Rose</a>
+    </li>
+    <li><a href="images/bigben.jpg" title="big ben">Big Ben</a></li>
+  </ul>
+
+  <!-- 以下使用动态DOM方法 -->
+  <!-- <img id="placeholder" src="images/placeholder.jpg">
+  <p id="description">image description</p> -->
+
+
+  <script>
+
+    // 随时为 onload 添加事件的辅助函数
+    function addLoadEvent(func) {
+      var oldonload = window.onload
+      if (typeof oldonload !== 'function') {
+        window.onload = func
+      } else {
+        window.onload = function () {
+          oldonload
+          func()
+        }
+      }
+    }
+
+    // insetAfter 在某个元素后面添加一个元素
+    function insetAfter(newElement, targetElement) {
+      var parent = targetElement.parentNode
+      if (targetElement === parent.lastChild) {
+        parent.appendChild(targetElement)
+      } else {
+        parent.insertBefore(newElement, targetElement.nextSibling)
+      }
+    }
+
+    function preparePlaceholder() {
+      var surported = document.createElement &&
+        document.createTextNode &&
+        document.getElementById
+      if (!surported) return false
+      if (!document.getElementById('imageGrallery')) return false
+      var placeholder = document.createElement('img')
+      placeholder.setAttribute('id', 'placeholder')
+      placeholder.setAttribute('src', 'images/placeholder.jpg')
+      placeholder.setAttribute('alt', 'my image grallery')
+      var description = document.createElement('p')
+      description.setAttribute('id', 'description')
+      var descText = document.createTextNode('choose a pic')
+      description.appendChild(descText)
+      var grallery = document.getElementById('imageGrallery')
+
+      insetAfter(placeholder, grallery)
+      insetAfter(description, placeholder)
+
+    }
+
+    // 事件注册
+    function prepareGallery() {
+      var supported = document.getElementById && document.getElementsByTagName
+      if (!supported) return false
+      var grallery = document.getElementById('imageGrallery')
+      var links = grallery.getElementsByTagName('a')
+      for (var i = 0; i < links.length; i++) {
+        links[i].onclick = function () {
+          return !showPic(this)
+        }
+      }
+    }
+
+
+    // 图片和描述更改
+    function showPic(whichPic) {
+      // 该图片路径
+      if (!document.getElementById('placeholder')) return false
+      var source = whichPic.getAttribute('href')
+      var placeholder = document.getElementById('placeholder')
+      if (placeholder.nodeName !== 'IMG') return false
+      placeholder.setAttribute('src', source)
+      // 改图片描述
+      if (document.getElementById('description')) {
+        var text = whichPic.getAttribute('title') ? whichPic.getAttribute('title') : ''
+        var description = document.getElementById('description')
+        if (description.firstChild.nodeType === 3) {
+          description.firstChild.nodeValue = text
+        }
+      }
+      return true
+    }
+
+    addLoadEvent(prepareGallery())
+    addLoadEvent(preparePlaceholder())
+
+  </script>
+</body>
+
+
+</html>

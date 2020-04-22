@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>video</title>
+</head>
+<style>
+  .video-wrapper {
+    overflow: hidden;
+  }
+
+  .controls {
+    position: absolute;
+    /* 坑：加 z-index 才能点击播放 */
+    z-index: 1000;
+    height: 30px;
+    width: 30px;
+    margin: auto;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .video-wrapper button {
+    display: block;
+    height: 100%;
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+    font-size: 17px;
+    color: #fff;
+    background: transparent;
+  }
+
+  .video-wrapper button[paused] {
+    font-size: 12px;
+  }
+</style>
+
+<body>
+  <div class="video-wrapper">
+    <video id='movie' controls>
+      <source src="video/movie.mp4" />
+      <!-- <p>DownLoad movie as <a href="#">视频下载地址</a></p> -->
+    </video>
+  </div>
+
+  <script>
+    function createVideoControls() {
+      var vids = document.getElementsByTagName('video')
+      for (var i = 0; i < vids.length; i++) {
+        addControls(vids[i])
+      }
+    }
+    function addControls(vid) {
+
+      vid.removeAttribute('controls')
+
+      vid.height = vid.videoHeight
+      vid.width = vid.videoWidth
+      vid.parentNode.style.height = vid.videoHeight + 'px'
+      vid.parentNode.style.width = vid.videoWidth + 'px'
+
+      var controls = document.createElement('div')
+      controls.setAttribute('class', 'controls')
+
+      var play = document.createElement('button')
+      play.setAttribute('title', 'Play')
+      play.innerHTML = '&#x25BA'
+
+      controls.appendChild(play)
+      vid.parentNode.insertBefore(controls, vid)
+
+      play.onclick = function () {
+        console.log("点击")
+        // 是否播放结束
+        if (vid.ended) {
+          vid.currentTime = 0
+        }
+        // vid 自身属性判断是否停止
+        if (vid.paused) {
+          vid.play()
+        } else {
+          vid.pause()
+        }
+      }
+
+      // 媒体播放
+      vid.addEventListener('play', function () {
+        play.innerHTML = '&#x2590;&#x2590;'
+        // 显示停止样式
+        play.setAttribute('paused', true)
+      }, false)
+
+      // 媒体暂停
+      vid.addEventListener('pause', function () {
+        play.innerHTML = '&#x25BA'
+        // 移除停止样式
+        play.removeAttribute('paused')
+      }, false)
+
+      // 媒体播放完成
+      vid.addEventListener('ended', function () {
+        vid.pause()
+      }, false)
+
+    }
+    window.onload = function () {
+      createVideoControls()
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>grallery</title>
+</head>
+
+<body>
+  <h1>Snapshots</h1>
+  <ul>
+    <li>
+      <a href="images/fireworks.jpg" title="fireworks" onclick="showPic(this); event.preventDefault()">Fireworks</a>
+    </li>
+    <li><a href="images/coffee.jpg" title="coffee" onclick="showPic(this); event.preventDefault()">Coffee</a>
+    </li>
+    <li><a href="images/rose.jpg" title="rose" onclick="showPic(this); return false">Rose</a>
+    </li>
+    <li><a href="images/bigben.jpg" title="clock" onclick="showPic(this); return false">Big Ben</a></li>
+  </ul>
+  <img id="placeholder" src="images/placeholder.jpg">
+  <p id="description">image title</p>
+</body>
+<script>
+  // window.onload
+  //   = currentBodyChildren()
+
+  function showPic(whichPic) {
+    var source = whichPic.getAttribute('href')
+    var placeholder = document.getElementById('placeholder')
+    placeholder.setAttribute('src', source)
+    var text = whichPic.getAttribute('title')
+    var description = document.getElementById('description')
+    description.firstChild.nodeValue = text
+  }
+
+  // function currentBodyChildren() {
+  //   var bodyElement = document.getElementsByTagName('body')[0]
+  //   console.log(bodyElement.childNodes)
+  //   alert(bodyElement.childNodes.length)
+  // }
+</script>
+
+</html>

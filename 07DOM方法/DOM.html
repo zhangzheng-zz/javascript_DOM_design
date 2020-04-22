@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM方法</title>
+</head>
+
+<body>
+  <div id="testDiv"></div>
+  <script>
+    window.onload = function () {
+      
+      createDom()
+    }
+
+    function createDom() {
+      var para = document.createElement('p')
+      var txt_1 = document.createTextNode('This is')
+      var emphasis = document.createElement('em')
+      var txt_2 = document.createTextNode('my')
+      var txt_3 = document.createTextNode(' content. ')
+      para.appendChild(txt_1)
+      emphasis.appendChild(txt_2)
+      para.appendChild(emphasis)
+      para.appendChild(txt_3)
+      var testDiv = document.getElementById('testDiv')
+      testDiv.appendChild(para)
+    }
+  </script>
+</body>
+
+</html>
